@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <h2>{{name|lowercase}}</h2>
     <h2>{{name|uppercase}}</h2>
+    <h2>{{message|titlecase}}</h2>
   `,
   styles: []
 })
