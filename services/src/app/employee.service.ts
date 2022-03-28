@@ -1,17 +1,28 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
+import { HttpClient ,HttpErrorResponse } from '@angular/common/http';
+import { IEmployee } from './employee';
+import { catchError, Observable } from 'rxjs';
+import { throwError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
-  constructor() { }
-  getEmployees(){
-    return[
-      {"id" :1 ,"name":"Andrew","age":30},
-      {"id" :2 ,"name":"weber","age":25},
-      {"id" :3 ,"name":"Alex","age":31},
-      {"id" :4 ,"name":"christina","age":28},
-    ];
+  private _url: string = "/assets/data/employees.json";
+
+  constructor(private http : HttpClient){}
+
+  getEmployees(): Observable<IEmployee[]>{
+    return this.http.get<IEmployee[]>(this._url).pipe(
+      catchError((err) => {
+        console.log('error caught in service')
+        console.error(err);
+
+        //Handle the error here
+
+        return throwError(err);    //Rethrow it back to component
+      })
+    )
   }
 }
